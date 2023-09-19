@@ -1,7 +1,6 @@
 {
   "name": "crm1",
   "version": "0.1.0",
-
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -28,9 +27,12 @@
     "web-vitals": "^2.1.4",
     "whatsapp-web.js": "^1.22.1"
   },
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "cb": "ncp build \"E:\\xampp1\\htdocs\\crm1\"",
+    "copy-build": "copy-files-from-to build E://xampp1/htdocs/crm1",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "copy-files-from-to": "^3.9.0"
   }
 }

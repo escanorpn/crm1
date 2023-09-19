@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter  as Router } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Switch } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,7 @@ function App() {
   const blackShades = {
     50: '#121212',
     100: '#0d0d0d',
-    200: '#000',
+    200: '#000', 
     // Add more shades as needed
   };
 

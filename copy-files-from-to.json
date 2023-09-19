@@ -1,0 +1,9 @@
+{
+    "copyFiles": [
+        {
+            "from": "build/**/*",
+            "to": "E://xampp1/htdocs/crm1"
+        }
+       
+    ]
+}
