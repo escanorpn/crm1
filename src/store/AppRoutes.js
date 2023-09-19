@@ -17,7 +17,7 @@ const AppRoutes = () => {
   const queryParams = new URLSearchParams(location.search);
   const isEmailSent = queryParams.get("email") === "sent";
   return (
-    <Routes>
+    <Routes basename={'home'}>
       <Route path="/" element={user ? <Landing /> : <Landing /> } />
       <Route path="/home" element={user ? <HomePage /> : <Landing />} />
       <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/signin" />} />

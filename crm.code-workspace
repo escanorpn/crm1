@@ -13,5 +13,7 @@
 			"path": "E:/xampp1/htdocs/crm"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"java.compile.nullAnalysis.mode": "disabled"
+	}
 }
