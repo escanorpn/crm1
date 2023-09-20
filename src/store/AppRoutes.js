@@ -9,6 +9,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../store/firebase';
 import Validate from '../components/validate';
 import Admin from '../components/admin/admin';
+import Profile from '../components/Profile'
 
 const AppRoutes = () => {
   const [user] = useAuthState(auth);
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/landing" element={!user ? <Landing /> : <Landing />} />
       <Route path="/validate" element={!user ? <Validate /> : <Validate />} />
       <Route path="/admin" element={!user ? <LoginPage /> : <Admin />} />
+      <Route path="/profile1" element={!user ? <LoginPage /> : <Profile />} />
       {/* Add other protected routes here */}
     </Routes>
   );

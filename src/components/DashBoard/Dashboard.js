@@ -47,6 +47,7 @@ import {signOut as firebaseSignOut } from 'firebase/auth';
 import TaskTable from '../Tasks/TaskTable';
 import Users from '../Users/index';
 import Tickets from '../Tickets/ticket';
+import Profile from '../Profile';
 import WhatsappRegistrationGuide from '../whatsapp/steps';
 import { useNavigate,  } from 'react-router-dom';
 
@@ -57,6 +58,8 @@ const Layout = () => {
     { isDivider: true }, // Add a divider
     { label: 'Tasks', path: '/tasks', navigate: false },
     { label: 'Tickets', path: '/tickets', navigate: false },
+    { isDivider: true }, 
+    { label: 'Profile', path: '/Profile', navigate: false },
     { isDivider: true }, // Add a divider
   ]; 
    
@@ -374,6 +377,7 @@ const drawer=CustomDrawer()
         {activeContent === 'Users' && <Users />}
         {activeContent === 'users' && <Users />}
         {activeContent === 'Tickets' && <Tickets />}
+        {activeContent === 'Profile' && <Profile />}
         {activeContent === 'Whatsapp' && <WhatsappRegistrationGuide />}
             {/* <DataGrid rows={rows} columns={columns} /> */}
           </div>

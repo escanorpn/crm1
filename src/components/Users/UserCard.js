@@ -45,21 +45,49 @@ export default function UserCard({ rows }) {
     }
   };
 
-  const handleDeleteAgent = async (agentId) => {
-    const agentRef = ref(db, `${DB}/agents/${agentId}`);
-    try {
-      await remove(agentRef);
-      setDeleteDialogOpen(false); // Close the dialog
-      setAgentToDelete(null); // Clear the agent to be deleted
-      console.log('Agent deleted successfully.');
-    } catch (error) {
-      console.error('Error deleting agent:', error);
-    }
+  // const handleDeleteAgent = async (agentId) => {
+  //   const agentRef = ref(db, `${DB}/agents/${agentId}`);
+  //   try {
+  //     await remove(agentRef);
+  //     setDeleteDialogOpen(false); // Close the dialog
+  //     setAgentToDelete(null); // Clear the agent to be deleted
+  //     console.log('Agent deleted successfully.');
+  //   } catch (error) {
+  //     console.error('Error deleting agent:', error);
+  //   }
+  // };
+  const handleDeleteAgent = () => {
+    let agent=agentToDelete;
+    console.log(agent)
+    return;
+    // Delete the agent node at `${DB}/agents/{agent.aid}`
+    const agentRef = ref(db, `${DB}/agents/${agent.aid}`);
+    remove(agentRef)
+      .then(() => {
+        console.log('Agent node deleted successfully.');
+      })
+      .catch((error) => {
+        console.error('Error deleting agent node:', error);
+      });
+  
+    // Delete the user node at `crm/users/{agent.uid}`
+    const userRef = ref(db, `crm/users/${agent.uid}`);
+    remove(userRef)
+      .then(() => {
+        console.log('User node deleted successfully.');
+      })
+      .catch((error) => {
+        console.error('Error deleting user node:', error);
+      });
+  
+    // After deletion, close the dialog
+    setDeleteDialogOpen(false);
   };
 
   const handleOpenDeleteDialog = (agent) => {
     setAgentToDelete(agent);
     setDeleteDialogOpen(true);
+    console.log(agent)
   };
 
   const handleCloseDeleteDialog = () => {

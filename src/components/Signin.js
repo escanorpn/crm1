@@ -75,12 +75,14 @@ const Login = () => {
   };
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      
       if (user) {
+       console.log( `${DB}/users/${user.uid}`)
         const userRef = ref(db, `${DB}/users/${user.uid}`);
         get(userRef)
           .then((snapshot) => {
             setLoading(true); // Set loading to true while checking user data
-  
+         
             if (!snapshot.exists()) {
               // User data doesn't exist, prompt for app code
               const appCode = prompt("Please enter the app code:");
@@ -120,6 +122,7 @@ const Login = () => {
                                   name: user.displayName || '', // Assuming user's display name is available
                                   email: user.email || '', // Assuming user's email is available
                                   role: 'user',
+                                  uid:user.uid,
                                 };
                                 const newUserRef = push(agentsRef); // Generate a unique key for the user entry
                                 set(newUserRef, userDetail)

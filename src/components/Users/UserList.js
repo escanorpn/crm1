@@ -11,20 +11,31 @@ function UserList() {
   const agentsRef = ref(db, `${DB}/agents`);
 
   useEffect(() => {
-    console.log(`${DB}/agents`)
-    
+    console.log(`${DB}/agents`);
+  
     // Set up a listener to listen for data changes
     const unsubscribe = onValue(agentsRef, (snapshot) => {
       const agentsData = snapshot.val();
-      const agentsArray = agentsData ? Object.values(agentsData) : [];
+      
+      // Convert the agentsData object into an array with UIDs as keys
+      const agentsArray = agentsData
+        ? Object.entries(agentsData).map(([aid, agentData]) => ({
+            aid, // Include the UID as a key
+            ...agentData, // Include other agent data
+          }))
+        : [];
+  
       setAgents(agentsArray);
     });
-console.log(selectedAppID)
+  
+    console.log(selectedAppID);
+  
     // Clean up the listener when the component unmounts
     return () => {
       unsubscribe();
     };
   }, [selectedAppID]);
+  
 
   return (
     <div className="agent-list">
