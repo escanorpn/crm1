@@ -11,6 +11,8 @@ import MultiStepDialog from './MultiStepDialog';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -48,7 +50,19 @@ function Landing() {
   const dispatch = useDispatch();
   const dbPath = useSelector((state) => state.app.DB);
   const navigate = useNavigate(); // Initialize useNavigate
-  
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false); 
+  const [deleteApp, setIsDeleteApp] = useState(null); // To track successful deletion
+
+  const handleOpenDeleteDialog = (app) => {
+    setDeleteDialogOpen(true);
+    setIsDeleteApp(app)
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setIsDeleteApp(null)
+  };
   const [user] = useAuthState(auth);
   useEffect(() => {
     setLoading(true)
@@ -62,9 +76,27 @@ function Landing() {
       setLoading(false)
   }, [user]);
 
-  const handleDeleteApp = (appId) => {
-    // Implement the logic to delete the app with the given appId
-    // You can use the 'set' function to remove the app from the database
+
+  const handleDeleteApp = (app) => {
+    const appId=app.id;
+    // Reference to the app node in the database
+    const appRef = ref(db, `${DB}/Apps/${user.uid}/${appId}`);
+
+    // Delete the app node
+    remove(appRef)
+      .then(() => {
+        setIsDeleted(true);
+        // Optionally, you can show a success message here
+        console.log('App deleted successfully.');
+      })
+      .catch((error) => {
+        // Handle any errors that occur during deletion
+        console.error('Error deleting app:', error);
+      })
+      .finally(() => {
+        // After deletion, close the dialog
+        handleCloseDeleteDialog();
+      });
   };
   
   useEffect(() => {
@@ -388,12 +420,13 @@ function refreshCode(appId, oldAppCode) {
      
     <Button variant="contained" color="primary" 
     style={{ cursor: 'pointer' }}
-    onClick={() => handleDeleteApp(app.id)}
+    // onClick={() => handleDeleteApp(app.id)}
+    onClick={() => handleOpenDeleteDialog(app)}
     >
       <DeleteIcon />
-      {/* <Typography variant="caption" color="inherit">
+      <Typography variant="caption" color="inherit">
         Delete
-      </Typography> */}
+      </Typography>
     </Button>
                   </Box>
             </CardContent>
@@ -402,7 +435,29 @@ function refreshCode(appId, oldAppCode) {
       ))}
         </Grid>
       </Box>
-     
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete App"}</DialogTitle>
+        <DialogContent>
+        <>
+              <DialogContentText id="alert-dialog-description">
+              {deleteApp ? `Are you sure you want to delete the app ${deleteApp.appName}? This action is irreversible, and all data will be lost.` : 'Are you sure you want to delete this app? This action is irreversible, and all data will be lost.'}
+            </DialogContentText>
+              <DialogActions>
+                <Button onClick={handleCloseDeleteDialog} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={() => handleDeleteApp(deleteApp)} color="primary" autoFocus>
+                  Yes, Delete
+                </Button>
+              </DialogActions>
+            </>
+        </DialogContent>
+      </Dialog>
       <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle>
           Multi-Step Dialog

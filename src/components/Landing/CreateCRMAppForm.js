@@ -161,7 +161,7 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         required
       />
       <TextField
-        label="Number"
+        label="Number of users"
         variant="outlined"
         fullWidth
         margin="normal"
@@ -169,8 +169,8 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         onChange={(e) => setNumber(e.target.value)}
         required
       />
-      <Typography gutterBottom>Number of Users</Typography>
-      <Slider
+      {/* <Typography gutterBottom>Number of Users</Typography> */}
+      {/* <Slider
         value={numUsers}
         onChange={(e, newValue) => setNumUsers(newValue)}
         valueLabelDisplay="auto"
@@ -178,7 +178,7 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         marks
         min={0}
         max={40}
-      />
+      /> */}
       <Box mt={2} display="flex" justifyContent="space-between">
         <Button variant="outlined" onClick={onBack}>
           Back
