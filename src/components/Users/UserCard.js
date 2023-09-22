@@ -59,7 +59,7 @@ export default function UserCard({ rows }) {
   const handleDeleteAgent = () => {
     let agent=agentToDelete;
     console.log(agent)
-    return;
+    // return;
     // Delete the agent node at `${DB}/agents/{agent.aid}`
     const agentRef = ref(db, `${DB}/agents/${agent.aid}`);
     remove(agentRef)

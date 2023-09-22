@@ -7,7 +7,8 @@ const initialState = {
   anchorElUser: null,
   mobileOpen: false,
   activeContent: 'Tasks',
-  
+  whatsappNumber:'254775478701',
+  phoneNumberId:'118868224638325',
   mUrl:"https://crm.lmglobalexhibitions.com/api.php",
   // mUrl:"http://localhost/crm/api.php",
   DB: 'your-default-database-path', // Replace with your actual default database path

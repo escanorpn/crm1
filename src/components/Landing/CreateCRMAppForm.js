@@ -7,7 +7,7 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { ref, push, set as setDatabase, serverTimestamp, get,child } from 'firebase/database';
+import { ref, push, set , serverTimestamp, get,child } from 'firebase/database';
 import { db, DB, auth } from '../../store/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -119,22 +119,38 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
   };
   
   
-  
-
   const uploadDataToDatabase = () => {
     const appData = { ...userData, appName, number, numUsers };
-
+  
     // Get a new database reference for the CRM apps collection
     const userAppsRef = ref(db, `${DB}/Apps/${user.uid}`);
-
+  
     // Push the app data to the user's app collection with a generated key
     const newUserAppRef = push(userAppsRef);
-    setDatabase(newUserAppRef, appData)
+    
+    // Set the app data at the generated key
+    set(newUserAppRef, appData)
       .then(() => {
         setSnackbarMessage('CRM App created successfully.');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-        onClose()
+        onClose();
+        const md={appName}
+        // Create the app reference based on appName
+        const appsByIdRef = ref(db, `${DB}/AppsById/${newUserAppRef.key}`);
+        set(appsByIdRef, md)
+          .then(() => {
+            // App reference by name created successfully
+            setSnackbarMessage('CRM ppp created successfully.');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            onClose();
+            console.log('CRM ppp created successfully.')
+          })
+          .catch((error) => {
+            // Handle error creating the app reference by name
+            console.error(`Error creating app reference by name: ${error.message}`);
+          });
       })
       .catch((error) => {
         setSnackbarMessage(`Error uploading CRM App: ${error.message}`);
@@ -142,6 +158,29 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         setSnackbarOpen(true);
       });
   };
+  
+
+  // const uploadDataToDatabase = () => {
+  //   const appData = { ...userData, appName, number, numUsers };
+
+  //   // Get a new database reference for the CRM apps collection
+  //   const userAppsRef = ref(db, `${DB}/Apps/${user.uid}`);
+
+  //   // Push the app data to the user's app collection with a generated key
+  //   const newUserAppRef = push(userAppsRef);
+  //   set(newUserAppRef, appData)
+  //     .then(() => {
+  //       setSnackbarMessage('CRM App created successfully.');
+  //       setSnackbarSeverity('success');
+  //       setSnackbarOpen(true);
+  //       onClose()
+  //     })
+  //     .catch((error) => {
+  //       setSnackbarMessage(`Error uploading CRM App: ${error.message}`);
+  //       setSnackbarSeverity('error');
+  //       setSnackbarOpen(true);
+  //     });
+  // };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);

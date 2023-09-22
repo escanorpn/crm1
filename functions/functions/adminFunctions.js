@@ -272,3 +272,31 @@ function generateSecret() {
 
   return secret;
 }
+exports.checkAppById = functions.https.onRequest(async (request, response) => {
+  const secretKey = request.headers.authorization; // Assuming the secret key is passed in the Authorization header
+  const secret = process.env.MY_SECRET; // Replace with your actual secret key
+  if (secretKey !== 'Bearer ' + secret) {
+    return response.status(403).json({ error: 'Unauthorized' });
+  }
+  
+  const { appId} = request.body;
+  // const appId = request.query.appId; // Extract the appId from the query parameter
+  console.log(appId)
+  try {
+    // Check if the app exists in CRM/AppsById/
+    const appsByIdRef = admin.database().ref(`crm/AppsById/${appId}`);
+    const snapshot = await appsByIdRef.once('value');
+    
+    if (snapshot.exists()) {
+      const appName = snapshot.val().appName; // Get the appName from the snapshot
+      // You can return the appName directly
+      response.status(200).json({ success: true, appName });
+    } else {
+      response.status(404).json({ success: false, message: 'App1 not found' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ success: false, message: 'An error occurred' });
+  }
+});
+
