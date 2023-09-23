@@ -33,7 +33,7 @@ const BusinessCodeCard = () => {
   };
 
   const openWhatsAppChat = () => {
-    const message = `apid=${selectedAppID}`;
+    const message = `${selectedAppID}`;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
