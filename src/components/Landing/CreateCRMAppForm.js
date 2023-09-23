@@ -199,7 +199,7 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         onChange={(e) => setAppName(e.target.value)}
         required
       />
-      <TextField
+      {/* <TextField
         label="Number of users"
         variant="outlined"
         fullWidth
@@ -207,7 +207,7 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         value={number}
         onChange={(e) => setNumber(e.target.value)}
         required
-      />
+      /> */}
       {/* <Typography gutterBottom>Number of Users</Typography> */}
       {/* <Slider
         value={numUsers}

@@ -228,7 +228,7 @@ const Login = () => {
         ) : (
           <Card elevation={5}>
             <CardContent>
-              <Typography variant="h6" gutterBottom>
+              {/* <Typography variant="h6" gutterBottom>
                 Sign in with Email Link
               </Typography>
               <TextField
@@ -250,7 +250,7 @@ const Login = () => {
                 <Link component={RouterLink} to="/signup">
                   Sign up
                 </Link>
-              </Typography>
+              </Typography> */}
             </CardContent>
           </Card>
         )}

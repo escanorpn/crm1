@@ -14,7 +14,7 @@ import { auth } from '../store/firebase'; // Import your Firebase signOut functi
 import { useSelector, useDispatch } from 'react-redux';
 
 let pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [ 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

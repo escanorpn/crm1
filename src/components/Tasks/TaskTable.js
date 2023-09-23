@@ -26,7 +26,7 @@ import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import {Typography} from '@mui/material'
+import {Snackbar} from '@mui/material'
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -44,6 +44,8 @@ function TaskTable() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Dialog form state
   const [dialogNewTask, setDialogNewTask] = useState('');
@@ -159,11 +161,24 @@ function TaskTable() {
   };
 
   const handleAddTask = async () => {
-    console.log(selectedAppID, DB)
-    if (!selectedAppID || dialogNewTask.trim() === '' || dialogAssignee.trim() === '') {
+    // console.log(selectedAppID, DB)
+   
+    if(!selectedAppID){
+      setSnackbarMessage('Error selecting App, please refresh');
+      setSnackbarOpen(true);
       return;
     }
-
+    if(dialogNewTask.trim() === ''){
+      setSnackbarMessage('Add task description');
+      setSnackbarOpen(true);
+      return;
+    }
+    if(dialogAssignee.trim() === ''){
+      setSnackbarMessage('Add asignee to task, if no one available add users');
+      setSnackbarOpen(true);
+      return;
+    }
+   
     try {
       setIsLoading(true);
       const newTaskRef = push(tasksRef);
@@ -226,7 +241,10 @@ function TaskTable() {
       setIsLoading(false);
     }
   };
-
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+    setSnackbarMessage('');
+  };
   const handleDeleteTask = async taskId => {
     const tasksRef = ref(db, `${DB}/tasks/${taskId}`);
 
@@ -326,7 +344,7 @@ function TaskTable() {
           <DialogTitle>Add New Task</DialogTitle>
           <DialogContent>
             <TextField
-              label="Name"
+              label="Task Description"
               value={dialogNewTask}
               onChange={e => setDialogNewTask(e.target.value)}
               margin="normal"
@@ -434,6 +452,12 @@ function TaskTable() {
       {showSuccessMessage && (
         <div style={{ color: 'green' }}>Operation succeeded!</div>
       )}
+        <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

@@ -88,7 +88,7 @@ const Signin = () => {
         ) : (
           <Card elevation={5}>
             <CardContent>
-              <Typography variant="h6" gutterBottom>
+              {/* <Typography variant="h6" gutterBottom>
                 Sign in with Email Link
               </Typography>
               <TextField
@@ -104,7 +104,7 @@ const Signin = () => {
                 <Button variant="contained" color="primary" onClick={handleEmailSignIn}>
                   Send Sign-In Link
                 </Button>
-              </Box>
+              </Box> */}
              
             </CardContent>
           </Card>

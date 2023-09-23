@@ -63,7 +63,7 @@ const Layout = () => {
     { isDivider: true }, // Add a divider
   ]; 
    
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [ 'Logout'];
   const [user] = useAuthState(auth);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [navItems, setNavItems] = React.useState(items);
