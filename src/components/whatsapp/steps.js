@@ -110,7 +110,7 @@ const BusinessCodeCard = () => {
      <Card style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
         <CardContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <Typography variant="h5" component="div">
-            Business Code
+            Organization Code
           </Typography>
           
         </CardContent>

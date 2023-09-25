@@ -168,7 +168,7 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { label: 'Users', path: '/users', navigate: false },
             { label: 'Tasks', path: '/tasks', navigate: false },
             { label: 'Tickets', path: '/tickets', navigate: false },
-            { isDivider: true }, // Add a divider
+          
             // { label: 'Finance', path: '/finance', navigate: false },
             { label: 'Whatsapp', path: '/whatsapp', navigate: false },
             { isDivider: true }, // Add a divider
