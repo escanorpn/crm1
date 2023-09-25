@@ -7,9 +7,11 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { ref, push, set , serverTimestamp, get,child } from 'firebase/database';
+import { ref, push, set , update,serverTimestamp, get,child } from 'firebase/database';
 import { db, DB, auth } from '../../store/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { functions } from "../../store/firebase"; 
+import { httpsCallable } from "firebase/functions";
 
 function CreateCRMAppForm({ userData, onBack, onClose }) {
   const [user] = useAuthState(auth);
@@ -118,13 +120,59 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
     }
   };
   
-  
+  const handleAddCustomClaim = async () => {
+   const customClaimKey="Admin";
+    const  customClaimValue=true;
+ 
+    const customClaim = { [customClaimKey]: customClaimValue }; // Use [] to create a dynamic key
+    console.log(customClaim, customClaimKey, customClaimValue);
+    try {
+      const addCustomClaim = httpsCallable(functions, "addCustomClaim");
+      const response = await addCustomClaim({
+        uid: user.uid,
+        // customClaim: customClaim,
+        customClaimKey:customClaimKey,
+        customClaimValue:customClaimValue
+      });
+      setSnackbarMessage(response.data.message);
+      setSnackbarSeverity(response.data.success ? "success" : "success");
+      setSnackbarOpen(true);
+      // setOpenDialog(false);
+ 
+      // getCustomClaims(claimsUser.uid);
+    } catch (error) {
+      console.error("Error adding custom claim:", error);
+      setSnackbarMessage("Error adding custom claim.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+    return;
+};
+const updateUser = (appsByIdRef) => {
+  // Create a reference to the user's data in the Users collection
+  const userUsersRef = ref(db, `${DB}/Users/${user.uid}`);
+
+  // Update the Admin field to true
+  update(userUsersRef, { appsByIdRef: true })
+    .then(() => {
+      // User data updated successfully
+      console.log('User updated successfully.');
+    })
+    .catch((error) => {
+      // Handle error updating user data
+      console.error(`Error updating user: ${error.message}`);
+    });
+   
+};
+
+
+
   const uploadDataToDatabase = () => {
     const appData = { ...userData, appName, number, numUsers };
   
     // Get a new database reference for the CRM apps collection
     const userAppsRef = ref(db, `${DB}/Apps/${user.uid}`);
-  
+    
     // Push the app data to the user's app collection with a generated key
     const newUserAppRef = push(userAppsRef);
     
@@ -135,11 +183,14 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
         onClose();
-        const md={appName}
+        const md={appName:appName,
+        owner:user.uid}
         // Create the app reference based on appName
         const appsByIdRef = ref(db, `${DB}/AppsById/${newUserAppRef.key}`);
         set(appsByIdRef, md)
           .then(() => {
+            // handleAddCustomClaim()
+            updateUser(appsByIdRef);
             // App reference by name created successfully
             setSnackbarMessage('CRM ppp created successfully.');
             setSnackbarSeverity('success');

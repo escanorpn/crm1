@@ -46,7 +46,7 @@ function Landing() {
   const [activeStep, setActiveStep] = useState(0);
   const [userData, setUserData] = useState(null);
   const [apps, setApps] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const dbPath = useSelector((state) => state.app.DB);
   const navigate = useNavigate(); // Initialize useNavigate
@@ -73,7 +73,7 @@ function Landing() {
         setActiveStep(0)
       }
   
-      setLoading(false)
+      // setLoading(false)
   }, [user]);
 
 
@@ -114,7 +114,7 @@ function Landing() {
         }));
         console.log(MyappsArray)
         setApps(MyappsArray);
-        setLoading(false)
+        // setLoading(false)
       }
     });
     setLoading(false)
@@ -126,7 +126,7 @@ function Landing() {
     setLoading(false)
   }
   
-  setLoading(false)
+  // setLoading(false)
   
   }, [user]);
   const handleNext = (data) => {

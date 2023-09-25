@@ -48,11 +48,13 @@ import TaskTable from '../Tasks/TaskTable';
 import Users from '../Users/index';
 import Tickets from '../Tickets/ticket';
 import Profile from '../Profile';
+import Finance from '../Finance';
 import WhatsappRegistrationGuide from '../whatsapp/steps';
 import { useNavigate,  } from 'react-router-dom';
 
 const Layout = () => {
 
+  const selectedAppID = useSelector(state => state.app.selectedAppID);
   let items = [
     { label: 'Home', path: '/', navigate: true },
     { isDivider: true }, // Add a divider
@@ -72,7 +74,8 @@ const settings = [ 'Logout'];
   const selectedApp = useSelector(state => state.app.selectedApp);
   const [loading, setLoading] = useState(false);
   const DB = useSelector((state) => state.app.DB);
-
+  const DB1 = useSelector((state) => state.app.DB1);
+  
   // const [mobileOpen, setMobileOpen] = React.useState(false);
   const drawerWidth = 210;
   const dispatch = useDispatch(); 
@@ -111,60 +114,74 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
       const menuSelection=(v)=>{
         setSelectedApp(v)
       }
-    const relevantData= async ()=>{
-      if(user){
-        setLoading(true); // Set loading state to true initially
-        const appsRef = ref(db, `${DB}/apps/${user.uid}`);
-        try {
-          const snapshot = await get(appsRef);
-          if (snapshot.exists()) {
-            const appsData = snapshot.val();
-          
-            const userApps = Object.entries(appsData || {}).map(([appId, appData]) => ({
-              id: appId,
-              ...appData,
-            })).filter(app => app.userId === user.uid);
-  
-            setApps(userApps);
-  
-            if (userApps.length > 0) {
-              setSelectedApp(userApps[0].name);
-              setSelectedAppID(userApps[0].id);
-            }
-          }
-          setLoading(false); // Set loading state to false after data is fetched
-        } catch (error) {
-          console.error('Error fetching apps:', error);
-          setLoading(false); // Make sure to set loading to false even in case of an error
-        }
-      }
-    }
+   
+      const checkUserIsOwner = (selectedApp) => {
+        return new Promise((resolve, reject) => {
+          // Create a reference to the selected app's data
+          const appRef = ref(db, `${DB1}/AppsById/${selectedApp}`);
+          // console.log("appData",`${DB1}/AppsById/${selectedApp}`)
+          // Retrieve the selected app's data
+          get(appRef)
+            .then((snapshot) => {
+              if (snapshot.exists()) {
+                // App data exists
+                const appData = snapshot.val();
+              
+                // Check if the user is the owner (by comparing the owner field to user.uid)
+                const isOwner = appData.owner === user.uid;
+      
+                // Resolve the promise with the result (true if user is the owner, false if not)
+                resolve(isOwner);
+              } else {
+                // App data doesn't exist
+                resolve(false);
+              }
+            })
+            .catch((error) => {
+              // Handle error retrieving app data
+              console.error(`Error retrieving app data: ${error.message}`);
+              // Reject the promise with the error
+              reject(error);
+            });
+        });
+      };
+      
       useEffect(() => {
+        if(!selectedApp){
+          
+          navigate("/");
+        }
         if (user) {
          user.getIdTokenResult()
          .then((idTokenResult) => {
             // Confirm the user is an Admin.
-            if (!!idTokenResult.claims.Admin) {
-              // Show admin UI.
-              // showAdminUI();
-             let items = [
-                { label: 'Home', path: '/', navigate: true },
-                { label: 'Admin', path: '/admin', navigate: true },
-                { isDivider: true }, // Add a divider
-                { label: 'Users', path: '/users', navigate: false },
-                { label: 'Tasks', path: '/tasks', navigate: false },
-                { label: 'Tickets', path: '/tickets', navigate: false },
-                { isDivider: true }, // Add a divider
-                { label: 'Whatsapp', path: '/whatsapp', navigate: false },
-                { isDivider: true }, // Add a divider
-              ]; 
-              setNavItems(items)
-              console.log('admin',idTokenResult.claims.Admin1)
-            } else {
-              // Show regular user UI.
-              // showRegularUI();
-              console.log('regularL',idTokenResult.claims)
-            }
+            checkUserIsOwner(selectedAppID)
+    .then((isOwner) => {
+    // Use the isAdmin value (true or false) here
+        if (isOwner) {
+          console.log('User is an admin.');
+          
+          let items = [
+            { label: 'Home', path: '/', navigate: true },
+            // { label: 'Admin', path: '/admin', navigate: true },
+            { isDivider: true }, // Add a divider
+            { label: 'Users', path: '/users', navigate: false },
+            { label: 'Tasks', path: '/tasks', navigate: false },
+            { label: 'Tickets', path: '/tickets', navigate: false },
+            { isDivider: true }, // Add a divider
+            // { label: 'Finance', path: '/finance', navigate: false },
+            { label: 'Whatsapp', path: '/whatsapp', navigate: false },
+            { isDivider: true }, // Add a divider
+          ]; 
+          setNavItems(items)
+        } else {
+          console.log('User is not an admin.');
+        }
+      })
+      .catch((error) => {
+        console.error(`Error: ${error.message}`);
+      });
+            
          })
          .catch((error) => {
            console.log(error);
@@ -251,44 +268,14 @@ function CustomDrawer() {
 const drawer=CustomDrawer()
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [open, setOpen] = useState(!isMobile);const [isNewAppDialogOpen, setNewAppDialogOpen] = useState(false);
+  const [open, setOpen] = useState(!isMobile);
   const [newAppName, setNewAppName] = useState('');
   
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
-  const createNewApp = async () => {
-    if (!newAppName.trim()) {
-      return;
-    }
-  
-    try {
-      const appsRef = ref(db, `${DB}/apps/${user.uid}`);
-      const newAppRef = push(appsRef);
-      const newAppData = {
-        name: newAppName,
-        userId: user.uid,
-        displayName: user.displayName,
-        createdAt: serverTimestamp(),
-        status:'pending',
-      };
-      await set(newAppRef, newAppData);
-      closeNewAppDialog();
-      console.log('New app created successfully');
-      relevantData()
-    } catch (error) {
-      console.error('Error creating new app:', error);
-    }
-  };
-  const openNewAppDialog = () => {
-    setNewAppDialogOpen(true);
-  };
-  
-  const closeNewAppDialog = () => {
-    setNewAppDialogOpen(false);
-    setNewAppName('');
-  };
+ 
   
 
   return (
@@ -378,31 +365,13 @@ const drawer=CustomDrawer()
         {activeContent === 'users' && <Users />}
         {activeContent === 'Tickets' && <Tickets />}
         {activeContent === 'Profile' && <Profile />}
+        {activeContent === 'Finance' && <Finance />}
         {activeContent === 'Whatsapp' && <WhatsappRegistrationGuide />}
             {/* <DataGrid rows={rows} columns={columns} /> */}
           </div>
         </Container>
       </Box>
-      <Dialog open={isNewAppDialogOpen} onClose={closeNewAppDialog}>
-  <DialogTitle>Create New App</DialogTitle>
-  <DialogContent>
-    <TextField
-      label="App Name"
-      value={newAppName}
-      onChange={e => setNewAppName(e.target.value)}
-      margin="normal"
-      fullWidth
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button variant="contained" color="primary" onClick={createNewApp}>
-      Create
-    </Button>
-    <Button onClick={closeNewAppDialog} color="primary">
-      Cancel
-    </Button>
-  </DialogActions>
-</Dialog>
+     
 
     </Box>
   );

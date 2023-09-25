@@ -12,7 +12,9 @@ const Validate = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-
+useEffect(()=>{
+setLoading(true);
+},[])
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };

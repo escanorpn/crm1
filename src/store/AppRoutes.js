@@ -21,8 +21,8 @@ const AppRoutes = () => {
     <Routes basename={'home'}>
       <Route path="/" element={user ? <Landing /> : <Landing /> } />
       <Route path="/home" element={user ? <Landing /> : <Landing />} />
-      <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/signin" />} />
-      <Route path="/dashboard/users" element={user ? <Dashboard /> : <Navigate to="/signin" />} />
+      <Route path="/dashboard" element={user ? <Dashboard /> : <Landing />} />
+      <Route path="/dashboard/users" element={user ? <Dashboard /> : <Landing />} />
       <Route path="/signin" element={!user ? <LoginPage /> : <LoginPage />} />
       <Route
         path="/signin"

@@ -35,7 +35,7 @@ const analytics = getAnalytics(app);
 // Export authentication, database, firestore, and GoogleAuthProvider
 export const auth = getAuth();
 export const db = getDatabase(app);
-export const firestore = getFirestore(app);
+export const fdb = getFirestore(app);
 export const functions = getFunctions(app);
 export const DB = 'crm';
 // export const googleAuthProvider = new GoogleAuthProvider(app);

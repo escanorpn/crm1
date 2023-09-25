@@ -11,7 +11,8 @@ const initialState = {
   phoneNumberId:'118868224638325',
   mUrl:"https://crm.lmglobalexhibitions.com/api.php",
   // mUrl:"http://localhost/crm/api.php",
-  DB: 'your-default-database-path', // Replace with your actual default database path
+  DB: 'your-default-database-path',
+  DB1: 'crm', // Replace with your actual default database path
 };
 
 const Actions = createSlice({
