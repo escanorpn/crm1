@@ -1,26 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import {
   Grid,
-  Card,
-  CardContent,
-  Typography,
   Snackbar,
-  Chip,
-  IconButton,
-  Tooltip,
+  Breadcrumbs,
+  Link,
+  Typography,
 } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import { emphasize, styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import { NavigateNext } from '@mui/icons-material';
 import { auth, fdb } from '../../store/firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import FileCopyIcon from '@mui/icons-material/FileCopy'; // Import copy icon
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { collection, onSnapshot, getDocs } from 'firebase/firestore';
+import Entity from './Entity';
+import Units from './Units';
+import Payments from './Payments'; // Import the Payments component
 
 const Finance = () => {
   const [financeData, setFinanceData] = useState([]);
+  const [unitData, setUnitData] = useState([]);
+  const [paymentsData, setPaymentsData] = useState([]); // State for Payments data
   const [error, setError] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [showUnits, setShowUnits] = useState(false);
+  const [showPayments, setShowPayments] = useState(false); // State to show Payments
   const user = auth.currentUser;
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      '&:hover, &:focus': {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
 
   useEffect(() => {
     if (user) {
@@ -30,6 +54,15 @@ const Finance = () => {
       setSnackbarOpen(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (showUnits) {
+      fetchUnitData();
+    }
+    if (showPayments) {
+      fetchPaymentsData(); // Fetch Payments data when showPayments is true
+    }
+  }, [showUnits, selectedProperty, showPayments]); // Add showPayments to the dependency array
 
   const calculateDaysRemaining = (expirationTimestamp) => {
     if (expirationTimestamp && expirationTimestamp.seconds) {
@@ -52,7 +85,6 @@ const Finance = () => {
   };
 
   const copyBillCode = (billCode) => {
-    // Function to copy the bill code to the clipboard
     navigator.clipboard.writeText(billCode);
   };
 
@@ -63,12 +95,61 @@ const Finance = () => {
     return billCode;
   };
 
-  const handleCardClick = (propertyId) => {
-    // Handle card click to navigate to Units component if unitCount is not 0 or N/A
-    const selectedProperty = financeData.find((finance) => finance.id === propertyId);
-console.log(propertyId,financeData)
+  const handleCardClick = (selectedProperty) => {
     if (selectedProperty && selectedProperty.unitCount !== 'N/A' && selectedProperty.unitCount !== 0) {
-      // history.push(`/units/${propertyId}`);
+      setSelectedProperty(selectedProperty);
+      setShowUnits(true);
+      setShowPayments(false); // Hide Payments when clicking on a property
+    }
+  };
+
+  const handlePaymentsClick = (selectedProperty) => {
+    setShowPayments(true);
+    setSelectedProperty(selectedProperty);
+    setShowUnits(false); // Hide Units when clicking on Payments
+  };
+
+  const fetchUnitData = async () => {
+    if (user && selectedProperty) {
+      try {
+        const unitCollectionRef = collection(
+          fdb,
+          'kjani',
+          'Entity',
+          user.uid,
+          selectedProperty.pid,
+          'Units'
+        );
+        const unitSnapshot = await getDocs(unitCollectionRef);
+        const unitData = unitSnapshot.docs.map((doc) => doc.data());
+        setUnitData(unitData);
+      } catch (error) {
+        console.error('Error fetching unit data:', error);
+        setError('Failed to fetch unit data. Please check your network connection.');
+        setSnackbarOpen(true);
+      }
+    }
+  };
+
+  const fetchPaymentsData = async () => {
+    if (user && selectedProperty) {
+      try {
+        const paymentsCollectionRef = collection( // Change the collection path to fetch Payments data
+          fdb,
+          'kjani',
+          'Entity',
+          user.uid,
+          selectedProperty.pid,
+          'payments' // Assuming 'payments' is the correct subcollection name
+        );
+        const paymentsSnapshot = await getDocs(paymentsCollectionRef);
+        const paymentsData = paymentsSnapshot.docs.map((doc) => doc.data());
+        setPaymentsData(paymentsData); // Set Payments data in state
+      } catch (error) {
+        console.error('Error fetching Payments data:', error);
+        setError('Failed to fetch Payments data. Please check your network connection.');
+        setSnackbarOpen(true);
+      }
     }
   };
   const fetchData = () => {
@@ -76,18 +157,23 @@ console.log(propertyId,financeData)
       const unsubscribe = onSnapshot(
         collection(fdb, 'kjani', 'Entity', user.uid),
         (snapshot) => {
+          if (!snapshot || snapshot.empty) {
+            // Handle the case when the snapshot is empty or undefined
+            console.log('Snapshot is empty or undefined');
+            return;
+          }
+  
           const data = [];
           snapshot.forEach((snap) => {
             const finance = snap.data();
-            // Add the document ID (pid) to the data
             const financeWithPid = { ...finance, pid: snap.id };
             data.push(financeWithPid);
           });
-          console.log('Data: ', data);
+  
           setFinanceData(data);
         },
         (error) => {
-          console.log('Error fetching finance data:', error);
+          console.error('Error fetching finance data:', error);
           setError(
             'Failed to fetch finance data. Please check your network connection.'
           );
@@ -111,68 +197,63 @@ console.log(propertyId,financeData)
 
   return (
     <div>
-      <h1>Finance Data</h1>
+      {showUnits || showPayments ? ( // Show breadcrumb only if showUnits or showPayments is true
+        <div>
+          <h2>{showUnits ? 'Units Data' : 'Payments Data'}</h2>
+          <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: "15px" }}>
+            <StyledBreadcrumb
+              onClick={() => {
+                setShowUnits(false);
+                setShowPayments(false);
+              }}
+              label="Finance Data"
+              icon={<HomeIcon fontSize="small" />}
+            />
+            {showUnits && (
+              <StyledBreadcrumb
+                label="Units"
+                // onClick={handlePaymentsClick} 
+              />
+            )}
+            {showPayments && (
+              <StyledBreadcrumb
+                label="Payments"
+                // onClick={() => setShowPayments(true)}
+              />
+            )}
+          </Breadcrumbs>
+        </div>
+      ) : (
+        <h3>Entity Data</h3>
+      )}
       <Grid container spacing={2}>
-        {financeData.map((finance, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card onClick={() => handleCardClick(finance.id)}>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {finance.name ? finance.name : 'N/A'}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  {finance.location ? (
-                    <Chip icon={<LocationOnIcon />} label={finance.location} />
-                  ) : (
-                    'N/A'
-                  )}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Expiration Date: {formatTimestamp(finance.ExpirationDate)}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Period: {finance.Period ? finance.Period : '0'}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Bill Code:{' '}
-                  {finance.billCode ? (
-                    <>
-                      <span>
-                        {truncateBillCode(finance.billCode, 5)}
-                      </span>
-                      <Tooltip title="Copy to Clipboard">
-                        <IconButton
-                          aria-label="copy"
-                          onClick={() => copyBillCode(finance.billCode)}
-                        >
-                          <FileCopyIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  ) : (
-                    'N/A'
-                  )}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Status: {finance.status ? finance.status : 'N/A'}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {finance.ExpirationDate ? (
-                    <>
-                      <AccessTimeIcon /> Days Remaining:{' '}
-                      {calculateDaysRemaining(finance.ExpirationDate)}
-                    </>
-                  ) : (
-                    'N/A'
-                  )}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Unit Count: {finance.unitCount !== undefined ? finance.unitCount : '0'}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {showUnits ? (
+          unitData.map((unit, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Units unit={unit} />
+            </Grid>
+          ))
+        ) : showPayments ? (
+          paymentsData.map((payment, index) => (
+            <Grid item xs={12} sm={12} md={4} key={index}>
+              <Payments payment={payment} />
+            </Grid>
+          ))
+        ) : (
+          financeData.map((finance, index) => (
+            <Grid item xs={12} sm={12} md={4} key={index}>
+              <Entity
+                data={finance}
+                handlePaymentsClick={handlePaymentsClick}
+                handleCardClick={handleCardClick}
+                copyBillCode={copyBillCode}
+                calculateDaysRemaining={calculateDaysRemaining}
+                formatTimestamp={formatTimestamp}
+                truncateBillCode={truncateBillCode}
+              />
+            </Grid>
+          ))
+        )}
       </Grid>
       <Snackbar
         open={snackbarOpen}

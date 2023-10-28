@@ -49,12 +49,14 @@ import Users from '../Users/index';
 import Tickets from '../Tickets/ticket';
 import Profile from '../Profile';
 import Finance from '../Finance';
+import Shamba from '../Shamba';
 import WhatsappRegistrationGuide from '../whatsapp/steps';
 import { useNavigate,  } from 'react-router-dom';
 
 const Layout = () => {
 
   const selectedAppID = useSelector(state => state.app.selectedAppID);
+  const selectedAppData = useSelector(state => state.app.selectedAppData);
   let items = [
     { label: 'Home', path: '/', navigate: true },
     { isDivider: true }, // Add a divider
@@ -169,13 +171,26 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { label: 'Tasks', path: '/tasks', navigate: false },
             { label: 'Tickets', path: '/tickets', navigate: false },
           
-            // { label: 'Finance', path: '/finance', navigate: false },
+            { label: 'Finance', path: '/finance', navigate: false },
             { label: 'Whatsapp', path: '/whatsapp', navigate: false },
             { isDivider: true }, // Add a divider
           ]; 
+          
+        console.log("selectedAppData: ",JSON.stringify(selectedAppData))
+         
           setNavItems(items)
         } else {
           console.log('User is not an admin.');
+        }
+        if(selectedAppData.selectedOption=="land"){
+          items = [
+            { label: 'Home', path: '/', navigate: true },
+            { label: 'Users', path: '/users', navigate: false },
+            // { label: 'Admin', path: '/admin', navigate: true },
+            { isDivider: true }, // Add a divider
+            { label: 'Shamba', path: '/shamba', navigate: false },
+            { isDivider: true }, // Add a divider
+          ]; 
         }
       })
       .catch((error) => {
@@ -366,6 +381,7 @@ const drawer=CustomDrawer()
         {activeContent === 'Tickets' && <Tickets />}
         {activeContent === 'Profile' && <Profile />}
         {activeContent === 'Finance' && <Finance />}
+        {activeContent === 'Shamba' && <Shamba />}
         {activeContent === 'Whatsapp' && <WhatsappRegistrationGuide />}
             {/* <DataGrid rows={rows} columns={columns} /> */}
           </div>

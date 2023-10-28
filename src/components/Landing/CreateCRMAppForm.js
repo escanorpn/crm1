@@ -12,6 +12,8 @@ import { db, DB, auth } from '../../store/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { functions } from "../../store/firebase"; 
 import { httpsCallable } from "firebase/functions";
+import MenuItem from '@mui/material/MenuItem';
+
 
 function CreateCRMAppForm({ userData, onBack, onClose }) {
   const [user] = useAuthState(auth);
@@ -22,6 +24,7 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
 
   useEffect(() => {
     if (!user) {
@@ -47,8 +50,8 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
   };
 
   const validateData = () => {
-    if (!appName || !number) {
-      setSnackbarMessage('App Name and Number are required fields.');
+    if (!appName || !number || !selectedOption) {
+      setSnackbarMessage('App Name, Number, and Option are required fields.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return false;
@@ -168,7 +171,9 @@ const updateUser = (appsByIdRef) => {
 
 
   const uploadDataToDatabase = () => {
-    const appData = { ...userData, appName, number, numUsers };
+    // const appData = { ...userData, appName, number, numUsers };
+    const appData = { ...userData, appName, number, numUsers, selectedOption }; // Include selectedOption in appData
+
   
     // Get a new database reference for the CRM apps collection
     const userAppsRef = ref(db, `${DB}/Apps/${user.uid}`);
@@ -211,28 +216,6 @@ const updateUser = (appsByIdRef) => {
   };
   
 
-  // const uploadDataToDatabase = () => {
-  //   const appData = { ...userData, appName, number, numUsers };
-
-  //   // Get a new database reference for the CRM apps collection
-  //   const userAppsRef = ref(db, `${DB}/Apps/${user.uid}`);
-
-  //   // Push the app data to the user's app collection with a generated key
-  //   const newUserAppRef = push(userAppsRef);
-  //   set(newUserAppRef, appData)
-  //     .then(() => {
-  //       setSnackbarMessage('CRM App created successfully.');
-  //       setSnackbarSeverity('success');
-  //       setSnackbarOpen(true);
-  //       onClose()
-  //     })
-  //     .catch((error) => {
-  //       setSnackbarMessage(`Error uploading CRM App: ${error.message}`);
-  //       setSnackbarSeverity('error');
-  //       setSnackbarOpen(true);
-  //     });
-  // };
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -259,16 +242,20 @@ const updateUser = (appsByIdRef) => {
         onChange={(e) => setNumber(e.target.value)}
         required
       />
-      {/* <Typography gutterBottom>Number of Users</Typography> */}
-      {/* <Slider
-        value={numUsers}
-        onChange={(e, newValue) => setNumUsers(newValue)}
-        valueLabelDisplay="auto"
-        step={10}
-        marks
-        min={0}
-        max={40}
-      /> */}
+      <TextField
+        select
+        label="Select Option"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={selectedOption}
+        onChange={(e) => setSelectedOption(e.target.value)}
+        required
+      >
+        <MenuItem value="land">Land</MenuItem>
+        <MenuItem value="property">Property</MenuItem>
+      </TextField>
+
       <Box mt={2} display="flex" justifyContent="space-between">
         <Button variant="outlined" onClick={onBack}>
           Back

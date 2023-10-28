@@ -35,7 +35,7 @@ import GenerateIcon from '@mui/icons-material/Refresh'
 import { ref, get, remove, set, serverTimestamp, onValue,update} from 'firebase/database';
 import { db, DB,  } from '../../store/firebase';
 import { useDispatch, useSelector} from 'react-redux';
-import { updateDB,updateDBPath,setSelectedApp,setSelectedAppID } from '../../store/Actions';
+import { updateDB,updateDBPath,setSelectedApp,setSelectedAppID,setSelectedAppData } from '../../store/Actions';
 import { useNavigate,  useLocation } from 'react-router-dom';
 
 const steps = ['Sign In', 'Create CRM App'];
@@ -167,6 +167,7 @@ function Landing() {
       dispatch(updateDBPath(newDBPath));
       dispatch(setSelectedApp(app.appName));
       dispatch(setSelectedAppID(app.id));
+      dispatch(setSelectedAppData(app));
       
       // Now that the DB path is updated, navigate to the desired location
       console.log(dbPath);

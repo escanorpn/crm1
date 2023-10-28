@@ -4,6 +4,7 @@ import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 import { getFunctions } from 'firebase/functions';
+import { getStorage } from "firebase/storage";
 
 // Get environment variables
 const apiKey = process.env.REACT_APP_API_KEY;
@@ -15,7 +16,6 @@ const messagingSenderId = process.env.REACT_APP_MESSAGING_SENDER_ID;
 const appId = process.env.REACT_APP_APP_ID;
 const measurementId = process.env.REACT_APP_MEASUREMENT_ID;
 
-console.log(apiKey)
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey,
@@ -32,10 +32,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-// Export authentication, database, firestore, and GoogleAuthProvider
+// Export authentication, database, firestore, functions, and storage
 export const auth = getAuth();
 export const db = getDatabase(app);
 export const fdb = getFirestore(app);
 export const functions = getFunctions(app);
+export const storage = getStorage(app);
 export const DB = 'crm';
 // export const googleAuthProvider = new GoogleAuthProvider(app);

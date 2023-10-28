@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   selectedApp: '',
+  selectedAppData: '',
   selectedAppID: '',
   navigationItems: [],
   anchorElUser: null,
@@ -9,8 +10,9 @@ const initialState = {
   activeContent: 'Tasks',
   whatsappNumber:'254775478701',
   phoneNumberId:'118868224638325',
-  mUrl:"https://crm.lmglobalexhibitions.com/api.php",
-  // mUrl:"http://localhost/crm/api.php",
+  selectedEntityId:'',
+  // mUrl:"https://crm.lmglobalexhibitions.com/api.php",
+  mUrl:"http://localhost/crm/api.php",
   DB: 'your-default-database-path',
   DB1: 'crm', // Replace with your actual default database path
 };
@@ -19,8 +21,14 @@ const Actions = createSlice({
   name: 'app',
   initialState,
   reducers: {
+    setSelectedEntityId: (state, action) => {
+      state.selectedEntityId = action.payload;
+    },
     setSelectedApp: (state, action) => {
       state.selectedApp = action.payload;
+    },
+    setSelectedAppData: (state, action) => {
+      state.selectedAppData = action.payload;
     },
     setMurl: (state, action) => {
       state.mUrl = action.payload;
@@ -55,6 +63,9 @@ export const {
   setActiveContent,
   updateDB, 
   mUrl,
+  selectedEntityId,
+  selectedAppData,
+  setSelectedAppData
 } = Actions.actions;
 
 export const getDB = (state) => {

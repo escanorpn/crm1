@@ -10,6 +10,7 @@ import { auth } from '../store/firebase';
 import Validate from '../components/validate';
 import Admin from '../components/admin/admin';
 import Profile from '../components/Profile'
+import Shamba from '../components/Shamba/public'
 
 const AppRoutes = () => {
   const [user] = useAuthState(auth);
@@ -22,6 +23,7 @@ const AppRoutes = () => {
       <Route path="/" element={user ? <Landing /> : <Landing /> } />
       <Route path="/home" element={user ? <Landing /> : <Landing />} />
       <Route path="/dashboard" element={user ? <Dashboard /> : <Landing />} />
+      <Route path="/shamba" element={user ? <Shamba /> : <Shamba />} />
       <Route path="/dashboard/users" element={user ? <Dashboard /> : <Landing />} />
       <Route path="/signin" element={!user ? <LoginPage /> : <LoginPage />} />
       <Route
