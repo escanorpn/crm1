@@ -35,7 +35,8 @@
     "cb": "ncp build \"E:\\xampp1\\htdocs\\crm1\"",
     "copy-build": "copy-files-from-to build E://xampp1/htdocs/crm1",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",  
+    "deploy": "npm run build && firebase deploy --only hosting"
   },
   "eslintConfig": {
     "extends": [

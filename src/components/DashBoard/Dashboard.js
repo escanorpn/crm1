@@ -175,12 +175,34 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { label: 'Whatsapp', path: '/whatsapp', navigate: false },
             { isDivider: true }, // Add a divider
           ]; 
-          
+          if(selectedAppData.selectedOption=="land"){
+            
         console.log("selectedAppData: ",JSON.stringify(selectedAppData))
+            items = [
+              { label: 'Home', path: '/', navigate: true },
+              { label: 'Users', path: '/users', navigate: false },
+              // { label: 'Admin', path: '/admin', navigate: true },
+              { isDivider: true }, // Add a divider
+              { label: 'Shamba', path: '/shamba', navigate: false },
+              { isDivider: true }, // Add a divider
+            ]; 
+          }
          
-          setNavItems(items)
+        console.log("items: ",JSON.stringify(items))
+       
+        
         } else {
           console.log('User is not an admin.');
+          if(selectedAppData.selectedOption=="land"){
+            items = [
+              { label: 'Home', path: '/', navigate: true },
+              { label: 'Users', path: '/users', navigate: false },
+              // { label: 'Admin', path: '/admin', navigate: true },
+              { isDivider: true }, // Add a divider
+              { label: 'Shamba', path: '/shamba', navigate: false },
+              { isDivider: true }, // Add a divider
+            ]; 
+          }
         }
         if(selectedAppData.selectedOption=="land"){
           items = [
@@ -192,6 +214,7 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { isDivider: true }, // Add a divider
           ]; 
         }
+        setNavItems(items)
       })
       .catch((error) => {
         console.error(`Error: ${error.message}`);

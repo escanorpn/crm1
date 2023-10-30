@@ -97,11 +97,11 @@ export default function App() {
         <CssBaseline />
         {/* <label>Dark Mode</label> */}
     <FormGroup>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked   checked={theme}
         onChange={handleChange}/>}
         label="Theme"
-      />
+      /> */}
     </FormGroup>
     <style>
             {`
