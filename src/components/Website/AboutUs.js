@@ -53,11 +53,11 @@ const AboutUs = () => {
   
   }, [DB]);
   return (
-    <div  className="navigation-top" style={{ width: "100%", minHeight: "99vh", overflow: "auto" }}>
+    <div  className="navigation-top" style={{ width: "100%", minHeight: "99vh", overflow: "auto" ,background: "linear-gradient(193deg, rgb(79 126 181), rgb(167, 29, 49) 74%)"}}>
     <Navigation  />
   
     <Card style={{ padding: "16px", maxWidth: "900px", margin: "auto", marginTop: "80px" }} className="img-card">
-      <Typography variant="h2" style={{ textAlign: "center",marginTop:"-5px",textAlign: "center", textShadow: "1px 1px 2px #d76563",fontWeight: "600",color: "#fff",fontSize: "22px;" }}>About Us</Typography>
+      <Typography variant="h2" style={{ textAlign: "center",marginTop:"-5px",textAlign: "center", textShadow: "1px 1px 2px #63d799",fontWeight: "600",color: "#fff",fontSize: "22px;" }}>About Us</Typography>
     </Card>
 
     <Card style={{ width: "100%", margin: "auto", marginTop: 20 }}>
