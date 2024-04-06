@@ -25,3 +25,4 @@ yarn-error.log*
 .gitignore
 .gitattributes
 crm.code-workspace
+node_modules
