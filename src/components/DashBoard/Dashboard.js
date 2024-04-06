@@ -1,33 +1,7 @@
 
 import React,{useState,useEffect} from 'react';
-import {
-  AppBar,
-  Button,
-  CssBaseline,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-  Container,
-  Box,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import TextField from '@mui/material/TextField';
-import DialogTitle from '@mui/material/DialogTitle';
+import { AppBar, Button, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, Container, Box, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { DataGrid } from '@mui/x-data-grid';
 
 import ListItemButton from '@mui/material/ListItemButton';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -50,6 +24,12 @@ import Tickets from '../Tickets/ticket';
 import Profile from '../Profile';
 import Finance from '../Finance';
 import Shamba from '../Shamba';
+import Folio from '../Folio';
+import Wlanding from '../Website/admin/landing';
+import Wfolio from '../Website/admin/folio';
+import Wcontact from '../Website/admin/ContactUs';
+import Wabout from '../Website/admin/AboutUs';
+import Domain from '../Domain/Domain';
 import WhatsappRegistrationGuide from '../whatsapp/steps';
 import { useNavigate,  } from 'react-router-dom';
 
@@ -64,6 +44,7 @@ const Layout = () => {
     { label: 'Tickets', path: '/tickets', navigate: false },
     { isDivider: true }, 
     { label: 'Profile', path: '/Profile', navigate: false },
+    { label: 'Domain', path: '/Domain', navigate: false },
     { isDivider: true }, // Add a divider
   ]; 
    
@@ -175,42 +156,65 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { label: 'Whatsapp', path: '/whatsapp', navigate: false },
             { isDivider: true }, // Add a divider
           ]; 
-          if(selectedAppData.selectedOption=="land"){
+          // if(selectedAppData.selectedOption=="land"){
             
-        console.log("selectedAppData: ",JSON.stringify(selectedAppData))
-            items = [
-              { label: 'Home', path: '/', navigate: true },
-              { label: 'Users', path: '/users', navigate: false },
-              // { label: 'Admin', path: '/admin', navigate: true },
-              { isDivider: true }, // Add a divider
-              { label: 'Shamba', path: '/shamba', navigate: false },
-              { isDivider: true }, // Add a divider
-            ]; 
-          }
+          // console.log("selectedAppData: ",JSON.stringify(selectedAppData))
+          //   items = [
+          //     { label: 'Home', path: '/', navigate: true },
+          //     { label: 'Users', path: '/users', navigate: false },
+          //     // { label: 'Admin', path: '/admin', navigate: true },
+          //     { isDivider: true }, // Add a divider
+          //     { label: 'Shamba', path: '/shamba', navigate: false },
+          //     { isDivider: true }, // Add a divider
+          //   ]; 
+          // }
          
-        console.log("items: ",JSON.stringify(items))
+          console.log("items: ",JSON.stringify(items))
        
         
         } else {
           console.log('User is not an admin.');
-          if(selectedAppData.selectedOption=="land"){
-            items = [
-              { label: 'Home', path: '/', navigate: true },
-              { label: 'Users', path: '/users', navigate: false },
-              // { label: 'Admin', path: '/admin', navigate: true },
-              { isDivider: true }, // Add a divider
-              { label: 'Shamba', path: '/shamba', navigate: false },
-              { isDivider: true }, // Add a divider
-            ]; 
-          }
+          // if(selectedAppData.selectedOption=="land"){
+          //   items = [
+          //     { label: 'Home', path: '/', navigate: true },
+          //     { label: 'Users', path: '/users', navigate: false },
+          //     // { label: 'Admin', path: '/admin', navigate: true },
+          //     { isDivider: true }, // Add a divider
+          //     { label: 'Shamba', path: '/shamba', navigate: false },
+          //     { isDivider: true }, // Add a divider
+          //   ]; 
+          // }
         }
         if(selectedAppData.selectedOption=="land"){
           items = [
             { label: 'Home', path: '/', navigate: true },
             { label: 'Users', path: '/users', navigate: false },
-            // { label: 'Admin', path: '/admin', navigate: true },
             { isDivider: true }, // Add a divider
             { label: 'Shamba', path: '/shamba', navigate: false },
+            { isDivider: true }, // Add a divider
+          ]; 
+        }
+        if(selectedAppData.selectedOption=="folio"){
+          items = [
+            { label: 'Home', path: '/', navigate: true },
+            { label: 'Users', path: '/users', navigate: false },
+            { isDivider: true }, // Add a divider
+            { label: 'Folio', path: '/folio', navigate: false },
+            { label: 'Domain', path: '/Domain', navigate: false },
+            { isDivider: true }, // Add a divider
+          ]; 
+        }
+        if(selectedAppData.selectedOption=="website"){
+          items = [
+            { label: 'Home', path: '/', navigate: true },
+            { label: 'Users', path: '/users', navigate: false },
+            { isDivider: true }, // Add a divider
+            { label: 'Wlanding', path: '/Wlanding', navigate: false },
+            { label: 'Wfolio', path: '/Wfolio', navigate: false },
+            { label: 'Wcontact', path: '/Wcontact', navigate: false },
+            { label: 'Wabout', path: '/Wabout', navigate: false },
+            { label: 'Folio', path: '/folio', navigate: false },
+            { label: 'Domain', path: '/Domain', navigate: false },
             { isDivider: true }, // Add a divider
           ]; 
         }
@@ -405,6 +409,12 @@ const drawer=CustomDrawer()
         {activeContent === 'Profile' && <Profile />}
         {activeContent === 'Finance' && <Finance />}
         {activeContent === 'Shamba' && <Shamba />}
+        {activeContent === 'Folio' && <Folio />}
+        {activeContent === 'Wfolio' && <Wfolio />}
+        {activeContent === 'Wlanding' && <Wlanding />}
+        {activeContent === 'Wcontact' && <Wcontact />}
+        {activeContent === 'Wabout' && <Wabout />}
+        {activeContent === 'Domain' && <Domain />}
         {activeContent === 'Whatsapp' && <WhatsappRegistrationGuide />}
             {/* <DataGrid rows={rows} columns={columns} /> */}
           </div>

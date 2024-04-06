@@ -50,8 +50,8 @@ function CreateCRMAppForm({ userData, onBack, onClose }) {
   };
 
   const validateData = () => {
-    if (!appName || !number || !selectedOption) {
-      setSnackbarMessage('App Name, Number, and Option are required fields.');
+    if (!appName || !selectedOption) {
+      setSnackbarMessage('App Name and Option are required fields.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return false;
@@ -233,7 +233,7 @@ const updateUser = (appsByIdRef) => {
         onChange={(e) => setAppName(e.target.value)}
         required
       />
-      <TextField
+      {/* <TextField
         label="Number of users"
         variant="outlined"
         fullWidth
@@ -241,7 +241,7 @@ const updateUser = (appsByIdRef) => {
         value={number}
         onChange={(e) => setNumber(e.target.value)}
         required
-      />
+      /> */}
       <TextField
         select
         label="Select Option"
@@ -254,6 +254,9 @@ const updateUser = (appsByIdRef) => {
       >
         <MenuItem value="land">Land</MenuItem>
         <MenuItem value="property">Property</MenuItem>
+        <MenuItem value="business">Business</MenuItem>
+        <MenuItem value="folio">Folio</MenuItem>
+        <MenuItem value="website">Website</MenuItem>
       </TextField>
 
       <Box mt={2} display="flex" justifyContent="space-between">

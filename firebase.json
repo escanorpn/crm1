@@ -5,6 +5,7 @@
   },
   
   "hosting": {
+    "site": "lmglobal",
     "public": "build",
     "ignore": [
       "firebase.json",

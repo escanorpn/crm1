@@ -11,9 +11,16 @@
 		},
 		{
 			"path": "../test"
+		},
+		{
+			"path": "../../../../../w/pesaflow"
+		},
+		{
+			"path": "../../../../../w/pesaflow/sharon/agriculture-and-food-authority-landing-template"
 		}
 	],
 	"settings": {
-		"java.compile.nullAnalysis.mode": "disabled"
+		"java.compile.nullAnalysis.mode": "disabled",
+		"liveServer.settings.multiRootWorkspaceName": "pesaflow"
 	}
 }
