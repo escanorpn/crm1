@@ -14,7 +14,6 @@ import Website from '../components/Website';
 import WAbout from '../components/Website/AboutUs';
 import WContact from '../components/Website/ContactUs';
 import WFolio from '../components/Website/Folio';
-
 import Shamba from '../components/Shamba/public';
 import Folio from '../components/Folio/public'; // Import the Folio component
 import { useSelector, useDispatch } from "react-redux";
@@ -25,50 +24,58 @@ const AppRoutes = () => {
   const DB1 = useSelector((state) => state.app.DB1);
   const dispatch = useDispatch();  
   const [rfolio, setFolio] = useState(false);
-
-  const domain = window.location.hostname;
-  console.log('hostname: ', domain);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isEmailSent = queryParams.get('email') === 'sent';
 
-  const [defaultElement, setDefaultElement] = useState(null);
+  // useEffect(() => {
+  //   const retrieveDomainData = async () => {
+  //     const domainKey = domain.replace(/[.#$/\[\]]/g, '_');
+      
+  //     console.log('domain_check:', `${DB1}/domains/${domainKey}`);
+  //     const domainsRef = ref(db, `${DB1}/domains/${domainKey}`);
+
+  //     onValue(domainsRef, (snapshot) => {
+  //       if (snapshot.exists()) {
+  //         let dbData = snapshot.val();
+  //         dispatch(updateDB(dbData.db));
+  //         console.log('dbData:', dbData);
+  //         // Conditionally set the default view based on dbData.type
+  //         if (dbData.type === 'folio') {
+  //           console.log('folio:', dbData);
+  //           // setDefaultElem ent(<Folio />);
+  //           setFolio(true)
+  //         }
+  //       }
+  //     });
+  //   };
+  //   retrieveDomainData();
+  // }, [DB1, domain]);
 
   useEffect(() => {
-    const retrieveDomainData = async () => {
-      const domainKey = domain.replace(/[.#$/\[\]]/g, '_');
-      
-      console.log('domain_check:', `${DB1}/domains/${domainKey}`);
-      const domainsRef = ref(db, `${DB1}/domains/${domainKey}`);
+    const domain = window.location.hostname;
+    console.log('hostname: ', domain);
 
-      onValue(domainsRef, (snapshot) => {
-        if (snapshot.exists()) {
-          let dbData = snapshot.val();
-          dispatch(updateDB(dbData.db));
-          console.log('dbData:', dbData);
-          // Conditionally set the default view based on dbData.type
-          if (dbData.type === 'folio') {
-            console.log('folio:', dbData);
-            // setDefaultElem ent(<Folio />);
-            setFolio(true)
-          }
-        }
-      });
+    // Function to check if the domain is localhost
+    const isLocalhost = () => {
+      return domain === 'localhost' || domain === '127.0.0.1';
     };
 
-    retrieveDomainData();
-  }, [DB1, domain]);
+    // Set the default route based on whether the domain is localhost or not
+    if (isLocalhost()) {
+      setFolio(false);
+    } else {
+      setFolio(true);
+    }
+  }, []);
 
   return (
     <Routes basename={'home'}>
-    {/* <Route path="/" element={rfolio ? <Landing /> : <Landing />} /> */}
-      <Route path="/" element={rfolio ? <Website /> : <Website />} />
+      <Route path="/" element={rfolio ? <Website /> : (user ? <Landing /> : <Landing />)} />
       <Route path="/Website/about" element={rfolio ? <WAbout /> : <WAbout />} />
       <Route path="/Website/contact" element={rfolio ? <WContact /> : <WContact />} />
       <Route path="/Website/folio" element={rfolio ? <WFolio /> : <WFolio />} />
       <Route path="/Website/" element={rfolio ? <Website /> : <Website />} />
-      
-      {/* <Route path="/" element={rfolio ? <Folio /> : <Landing />} /> */}
       <Route path="/public" element={rfolio ? <Folio /> : <Folio />} />
       <Route path="/home" element={user ? <Landing /> : <Landing />} />
       <Route path="/dashboard" element={user ? <Dashboard /> : <Landing />} />

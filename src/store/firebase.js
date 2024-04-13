@@ -16,6 +16,7 @@ const messagingSenderId = process.env.REACT_APP_MESSAGING_SENDER_ID;
 const appId = process.env.REACT_APP_APP_ID;
 const measurementId = process.env.REACT_APP_MEASUREMENT_ID;
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey,
@@ -39,4 +40,5 @@ export const fdb = getFirestore(app);
 export const functions = getFunctions(app);
 export const storage = getStorage(app);
 export const DB = 'crm';
+export const maps = process.env.REACT_APP_MAPS;
 // export const googleAuthProvider = new GoogleAuthProvider(app);

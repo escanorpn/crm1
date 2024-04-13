@@ -257,6 +257,7 @@ const updateUser = (appsByIdRef) => {
         <MenuItem value="business">Business</MenuItem>
         <MenuItem value="folio">Folio</MenuItem>
         <MenuItem value="website">Website</MenuItem>
+        <MenuItem value="menu">Menu</MenuItem>
       </TextField>
 
       <Box mt={2} display="flex" justifyContent="space-between">

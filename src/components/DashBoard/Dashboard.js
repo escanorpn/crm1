@@ -29,6 +29,12 @@ import Wlanding from '../Website/admin/landing';
 import Wfolio from '../Website/admin/folio';
 import Wcontact from '../Website/admin/ContactUs';
 import Wabout from '../Website/admin/AboutUs';
+
+import Mlanding from '../Menu/admin/landing';
+import Mfolio from '../Menu/admin/folio';
+import Mcontact from '../Menu/admin/ContactUs';
+import Mabout from '../Menu/admin/AboutUs';
+
 import Domain from '../Domain/Domain';
 import WhatsappRegistrationGuide from '../whatsapp/steps';
 import { useNavigate,  } from 'react-router-dom';
@@ -214,6 +220,20 @@ let mobileOpen = useSelector(state => state.app.mobileOpen);
             { label: 'Wcontact', path: '/Wcontact', navigate: false },
             { label: 'Wabout', path: '/Wabout', navigate: false },
             { label: 'Folio', path: '/folio', navigate: false },
+            { label: 'Domain', path: '/Domain', navigate: false },
+            { isDivider: true }, // Add a divider
+          ]; 
+        }
+        
+        if(selectedAppData.selectedOption=="menu"){
+          items = [
+            { label: 'Home', path: '/', navigate: true },
+            { label: 'Users', path: '/users', navigate: false },
+            { isDivider: true }, // Add a divider
+            { label: 'Mlanding', path: '/Mlanding', navigate: false },
+            { label: 'Mfolio', path: '/Mfolio', navigate: false },
+            { label: 'Mcontact', path: '/Mcontact', navigate: false },
+            { label: 'Mabout', path: '/Mabout', navigate: false },
             { label: 'Domain', path: '/Domain', navigate: false },
             { isDivider: true }, // Add a divider
           ]; 
@@ -414,6 +434,10 @@ const drawer=CustomDrawer()
         {activeContent === 'Wlanding' && <Wlanding />}
         {activeContent === 'Wcontact' && <Wcontact />}
         {activeContent === 'Wabout' && <Wabout />}
+        {activeContent === 'Mfolio' && <Wfolio />}
+        {activeContent === 'Mlanding' && <Wlanding />}
+        {activeContent === 'Mcontact' && <Wcontact />}
+        {activeContent === 'Mabout' && <Wabout />}
         {activeContent === 'Domain' && <Domain />}
         {activeContent === 'Whatsapp' && <WhatsappRegistrationGuide />}
             {/* <DataGrid rows={rows} columns={columns} /> */}
