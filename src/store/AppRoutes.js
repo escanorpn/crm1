@@ -27,30 +27,31 @@ const AppRoutes = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isEmailSent = queryParams.get('email') === 'sent';
+  const domain = window.location.hostname;
 
-  // useEffect(() => {
-  //   const retrieveDomainData = async () => {
-  //     const domainKey = domain.replace(/[.#$/\[\]]/g, '_');
+  useEffect(() => {
+    const retrieveDomainData = async () => {
+      const domainKey = domain.replace(/[.#$/\[\]]/g, '_');
       
-  //     console.log('domain_check:', `${DB1}/domains/${domainKey}`);
-  //     const domainsRef = ref(db, `${DB1}/domains/${domainKey}`);
+      console.log('domain_check:', `${DB1}/domains/${domainKey}`);
+      const domainsRef = ref(db, `${DB1}/domains/${domainKey}`);
 
-  //     onValue(domainsRef, (snapshot) => {
-  //       if (snapshot.exists()) {
-  //         let dbData = snapshot.val();
-  //         dispatch(updateDB(dbData.db));
-  //         console.log('dbData:', dbData);
-  //         // Conditionally set the default view based on dbData.type
-  //         if (dbData.type === 'folio') {
-  //           console.log('folio:', dbData);
-  //           // setDefaultElem ent(<Folio />);
-  //           setFolio(true)
-  //         }
-  //       }
-  //     });
-  //   };
-  //   retrieveDomainData();
-  // }, [DB1, domain]);
+      onValue(domainsRef, (snapshot) => {
+        if (snapshot.exists()) {
+          let dbData = snapshot.val();
+          dispatch(updateDB(dbData.db));
+          console.log('dbData:', dbData);
+          // Conditionally set the default view based on dbData.type
+          if (dbData.type === 'folio') {
+            console.log('folio:', dbData);
+            // setDefaultElem ent(<Folio />);
+            setFolio(true)
+          }
+        }
+      });
+    };
+    retrieveDomainData();
+  }, [DB1, domain]);
 
   useEffect(() => {
     const domain = window.location.hostname;
@@ -71,7 +72,8 @@ const AppRoutes = () => {
 
   return (
     <Routes basename={'home'}>
-      <Route path="/" element={rfolio ? <Website /> : (user ? <Landing /> : <Landing />)} />
+    {/* <Route path="/" element={rfolio ? <Website /> : (user ? <Landing /> : <Landing />)} /> */}
+      <Route path="/" element={rfolio ? <Website /> : (user ? <Website /> : <Website />)} />
       <Route path="/Website/about" element={rfolio ? <WAbout /> : <WAbout />} />
       <Route path="/Website/contact" element={rfolio ? <WContact /> : <WContact />} />
       <Route path="/Website/folio" element={rfolio ? <WFolio /> : <WFolio />} />
