@@ -36,21 +36,22 @@ const SlickCarousel = ({ items }) => {
   };
 
   return (
-    <Box sx={{ width: '80%', margin: 'auto', mt: 4 }}>
+    <Box sx={{ width: '90%', margin: 'auto', mt: 4 }}>
       <Typography variant="h4" component="div" sx={{ textAlign: 'center', mb: 2 }}>
         Brands Trust Us
       </Typography>
       <Carousel 
+      arrows={false} 
         swipeable={false}
-        draggable={false}
+        draggable={true}
         showDots={false}
         responsive={responsive}
         infinite={true}
         autoPlay={deviceType !== "mobile"}
-        autoPlaySpeed={3000}
+        autoPlaySpeed={2000}
         keyBoardControl={true}
         customTransition="all .5"
-        transitionDuration={500}
+        transitionDuration={200}
         containerClass="carousel-container"
         removeArrowOnDeviceType={["tablet", "mobile"]}
         deviceType={deviceType}

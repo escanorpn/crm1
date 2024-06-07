@@ -82,36 +82,36 @@ const HomePage = () => {
   const items = [
     {
       type: 'image',
-      content: 'https://via.placeholder.com/800x400',
+      content: 'https://artemim.in/assets/images/resource/11.jpg',
     },
+    // {
+    //   type: 'text',
+    //   content: 'This is a text slide',
+    // },
     {
-      type: 'text',
-      content: 'This is a text slide',
+      type: 'image',
+      content: 'https://artemim.in/assets/images/resource/13.jpg',
     },
     {
       type: 'image',
-      content: 'https://via.placeholder.com/150x50',
+      content: 'https://artemim.in/assets/images/resource/15.jpg',
     },
     {
       type: 'image',
-      content: 'https://via.placeholder.com/150x50',
+      content: 'https://artemim.in/assets/images/resource/17.jpg',
     },
     {
       type: 'image',
-      content: 'https://via.placeholder.com/150x50',
+      content: 'https://artemim.in/assets/images/resource/18.jpg',
     },
-    {
-      type: 'image',
-      content: 'https://via.placeholder.com/150x50',
-    },
-    {
-      type: 'card',
-      content: {
-        image: 'https://via.placeholder.com/800x400',
-        title: 'Card Title',
-        description: 'This is a description for the card slide',
-      },
-    },
+    // {
+    //   type: 'card',
+    //   content: {
+    //     image: 'https://via.placeholder.com/800x400',
+    //     title: 'Card Title',
+    //     description: 'This is a description for the card slide',
+    //   },
+    // },
   ];
   const [bannerImages, setBannerImages] = useState([]);
 
@@ -239,7 +239,7 @@ const HomePage = () => {
     </Grid>
   ))}
 </Grid>
-<Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+<Box sx={{ display: 'flex', flexDirection: 'column',}}>
       <CssBaseline />
       <Container sx={{ flexGrow: 1, p: 3 }}>
         <SlickCarousel items={items} />
