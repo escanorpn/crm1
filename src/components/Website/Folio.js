@@ -5,6 +5,7 @@ import { ref, onValue, remove } from "firebase/database";
 import { db } from "../../store/firebase";
 import { useSelector } from "react-redux";
 import Navigation from "./Navigation";
+import Footer from "./Footer";
 
 const FolioPage = () => {
   const DB = useSelector((state) => state.app.DB);
@@ -76,8 +77,13 @@ const FolioPage = () => {
  
 
   
-  return (
-    <div  className="navigation-top" style={{ width: "100%", minHeight: "99vh", overflow: "auto" }}>
+  return (<div className="navigation-top" style={{ 
+    width: "100%", 
+    minHeight: "99vh", 
+    overflow: "auto", 
+    background: "linear-gradient(146deg, rgb(44, 62, 80) 8%, #1e1e1e 12%, white 25%, rgb(30, 30, 30) 9%, rgb(30, 30, 30) 92%, #1e1e1e 7%, black 98%, rgb(44, 62, 80) 1%) center center/ cover fixed"
+  
+  }}>
  
     <Navigation  />
     
@@ -115,13 +121,12 @@ const FolioPage = () => {
 
 
 
-      <Card style={{ width: "100%", margin: "auto", marginTop: 20 }}>
-        <CardContent style={{ padding: "20px", textAlign: "center" }}>
-        </CardContent>
+      <Card style={{ width: "100%", margin: "auto", marginTop: 3, }}>
+        <CardContent style={{ padding: "20px", textAlign: "center"}}>
        
-        
+       
 
-        <Grid container spacing={2} justifyContent="center" style={{ margin: "auto", marginTop: "20px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "20px", paddingLeft:"12px", paddingRight:"12px" }}>
+        <Grid container spacing={2} justifyContent="center" style={{ margin: "auto", marginTop: "20px", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "20px", paddingLeft:"12px", paddingRight:"12px" ,background:"linear-gradient(124deg, #646464 9%, #282828 5%, #282828 94%, rgb(100 100 100) 77%) center center / cover fixed" }}>
   {imageData.map((image, index) => (
     <Grid item key={index}>
       <div style={{ position: "relative", display: "inline-block" }}>
@@ -151,7 +156,8 @@ const FolioPage = () => {
     </Grid>
   ))}
 </Grid>
-
+<Footer/>
+</CardContent>
 
       </Card>
     </div>

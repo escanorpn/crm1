@@ -5,6 +5,7 @@ import { ref, push, onValue,remove } from "firebase/database";
 import { db, storage } from "../../store/firebase";
 import { useSelector } from "react-redux";
 import Navigation from "./Navigation";
+import Footer from "./Footer";
 
 
 // import Navigation from "./Navigation";
@@ -101,7 +102,7 @@ const AboutUs = () => {
     </Typography>
   </div>
     <Card style={{ width: "100%", margin: "auto", marginTop: 3 }}>
-        <CardContent style={{ padding: "20px", textAlign: "center" }}>
+        <CardContent style={{ padding: "20px", textAlign: "center",background:"linear-gradient(124deg, #646464 9%, #282828 5%, #282828 94%, rgb(100 100 100) 77%) center center / cover fixed"}}>
  
 
           <Typography    
@@ -151,7 +152,7 @@ const AboutUs = () => {
             
           </Typography>
          
-
+          <Footer/>
         </CardContent>
           
             </Card>
