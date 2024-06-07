@@ -89,6 +89,22 @@ const HomePage = () => {
       content: 'This is a text slide',
     },
     {
+      type: 'image',
+      content: 'https://via.placeholder.com/150x50',
+    },
+    {
+      type: 'image',
+      content: 'https://via.placeholder.com/150x50',
+    },
+    {
+      type: 'image',
+      content: 'https://via.placeholder.com/150x50',
+    },
+    {
+      type: 'image',
+      content: 'https://via.placeholder.com/150x50',
+    },
+    {
       type: 'card',
       content: {
         image: 'https://via.placeholder.com/800x400',
