@@ -142,18 +142,19 @@ const FolioPage = () => {
 >
 </div> */}
 <div
-    style={{
-      width: "100%",
-      height: "70vh",
-      background: bannerImages[0] && bannerImages[0].downloadURL ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${bannerImages[0].downloadURL}')` : "none",
-      
-      backgroundPosition: "center",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundSize: "cover",
-      
-    }}
+ style={{
+  width: "100%",
+  height: "70vh",
+  background: bannerImages[0] && bannerImages[0].downloadURL ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${bannerImages[0].downloadURL}')` : "none",
+  backgroundSize: "cover", // Ensures the whole image is displayed
+  backgroundPosition: "center", // Centers the image
+  backgroundAttachment: "fixed", // Makes the background image fixed
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundRepeat: "no-repeat" // Prevents repeating the image
+}}
+
   >
     {/* Your content here */}
     <Typography variant="h4" style={{ color: "white", textAlign: "center" }}>

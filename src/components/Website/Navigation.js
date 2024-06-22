@@ -52,7 +52,7 @@ const Navigation = () => {
           
           <li>
             <a href="#/Website/folio" onClick={closeleMenu}>
-              Folio
+            Portfolio
             </a>
           </li>
           <li>
@@ -62,7 +62,7 @@ const Navigation = () => {
           </li>
           <li>
             <a href="#/Website/contact" onClick={closeleMenu}>
-              Contact
+            Contact Us
             </a>
           </li>
         </ul>

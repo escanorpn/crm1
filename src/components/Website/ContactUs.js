@@ -27,7 +27,7 @@ const AnyReactComponent = ({ lat, lng, text }) => (
 const ContactUs = () => (
   <div className="navigation-top" style={{ width: "100%", minHeight: "99vh", overflow: "auto",background:"linear-gradient(124deg, #646464 9%, #282828 5%, #282828 94%, rgb(100 100 100) 77%) center center / cover fixed"}}>
    <Navigation  />
-    <Card style={{ padding: "16px", maxWidth: "1100px", margin: "auto", marginTop: "80px", background: "linear-gradient(146deg, rgb(93 93 93) 8%, rgb(100 100 100) 12%, #081321 25%, rgb(30, 30, 30) 9%, rgb(30, 30, 30) 92%, rgb(30, 30, 30) 7%, black 98%, #5c5c5c 1%) center center / cover fixed" }} className="img-card">
+    <Card style={{ padding: "16px", maxWidth: "1100px", margin: "auto", marginTop: "80px", background: "linear-gradient(234deg, rgb(100, 100, 100) 29%, rgb(40, 40, 39) 5%, rgb(40, 40, 40) 78%, rgb(100, 100, 100) 37%) center center / cover fixed" }} className="img-card">
       <div style={{ height: '400px', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: maps }}

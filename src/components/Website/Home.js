@@ -49,18 +49,37 @@ const HomePage = () => {
     };
     const fetchData =  () => {
       const databaseRef = ref(db, `${DB}/samples`);
+      // onValue(databaseRef, (snapshot) => {
+      //   const data = snapshot.val();
+      //   const imageDataArray = [];
+      //   console.log("data:  "+JSON.stringify(data))
+      //   // Iterate through the retrieved data and store in imageDataArray
+      //   for (const key in data) {
+      //     const { downloadURL, text } = data[key];
+      //     imageDataArray.push({ key, downloadURL, text }); // Include key in imageDataArray
+      //   }
+      //   setImageData(imageDataArray);
+      //   console.log("JSON_imageDataArray:  "+JSON.stringify(imageDataArray))
+      // });
+
       onValue(databaseRef, (snapshot) => {
         const data = snapshot.val();
         const imageDataArray = [];
-        console.log("data:  "+JSON.stringify(data))
+        console.log("data:  " + JSON.stringify(data));
+      
         // Iterate through the retrieved data and store in imageDataArray
+        let count = 0;
         for (const key in data) {
+          if (count >= 3) break; // Stop after 3 items
           const { downloadURL, text } = data[key];
           imageDataArray.push({ key, downloadURL, text }); // Include key in imageDataArray
+          count++;
         }
+      
         setImageData(imageDataArray);
-        console.log("JSON_imageDataArray:  "+JSON.stringify(imageDataArray))
+        console.log("JSON_imageDataArray:  " + JSON.stringify(imageDataArray));
       });
+      
     };
     fetchHeadingData();
     fetchParagraphData();
