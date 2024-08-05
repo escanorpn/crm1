@@ -1,22 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "../crm"
-		},
-		{
-			"path": "."
-		},
-		{
 			"path": "../../../../../w/rn/sms/s1"
 		},
 		{
-			"path": "../test"
-		},
-		{
-			"path": "../../../../../w/pesaflow"
-		},
-		{
 			"path": "../../../../../w/pesaflow/sharon/agriculture-and-food-authority-landing-template"
+		},
+		{
+			"path": ".."
 		}
 	],
 	"settings": {
